@@ -38,18 +38,18 @@
 }
 .menu-links-con .link-con {
   padding: 8px 16px;
-  border: 1px solid var(--border);
+  /* border: 1px solid var(--border); */
   border-radius: 8px;
-  box-shadow: 0 0 6px rgb(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 6px rgb(0, 0, 0, 0.1); */
   font-size: 18px;
   text-transform: capitalize;
   font-weight: 300;
   color: var(--text-primary);
 }
 .link-con:hover {
-  border-color: var(--primary);
+  /* border-color: var(--primary); */
   color: var(--primary-hover);
-  background-color: var(--primary-soft);
+  /* background-color: var(--primary-soft); */
 }
 .menu-links-con button {
   display: flex;
