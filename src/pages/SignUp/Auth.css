@@ -1,0 +1,2 @@
+/* Re-uses the same auth styles as SignIn (kept identical for simplicity). */
+@import url("../SignIn/Auth.css");
