@@ -1,5 +1,4 @@
-import React from "react";
-import {BrowserRouter, Route,Routes, Link, NavLink} from "react-router-dom";
+import {Route,Routes} from "react-router-dom";
 import Home from  "./pages/Home/Home";
 import Shop from  "./pages/Shop/Shop";
 import Categories from  "./pages/Categories/Categories";
@@ -23,10 +22,10 @@ const App = () => {
   return (
     <div className="app">
        <Navbar />
-     
+   
        <main className="app-main">
           <Routes>
-            <Route path="/" element= {<Hero />} />
+            <Route path="/" element={<Home />} />
             <Route path="/shop" element= {<Shop />} />
             <Route path="/categories" element= {<Categories />} />
             <Route path="/about" element= {<About />} />
@@ -40,7 +39,7 @@ const App = () => {
 
           </Routes>
        </main>
-         <Contact />
+      
        <Footer />
     </div>
   )
