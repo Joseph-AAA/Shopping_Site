@@ -9,19 +9,20 @@ const Navbar = () => {
   return <>
            <header className="navbar">
               <div className="container navbar-inner">
+               
                 <Link to="/" className="logo">
                    <img src={Logo} alt="Nova Logo" className="logo-img"/>
                    <span className="logo-title">NovaTech</span>
                 </Link>
                 <nav className="nav-links">
-                    {
+                     {
                       navLinks.map((link)=>{
-                          <NavLink key={link.id} to={link.href} >
+                          return <NavLink key={link.id} to={link.href} >
                               {link.label}
                           </NavLink>
-                      })
-                    }
-                    <div className="nav-actions">
+                      }) }
+                </nav>
+                  <div className="nav-actions">
 
                         {/*Theme Toggle Component*/}
                         <ThemeToggle />
@@ -37,8 +38,8 @@ const Navbar = () => {
                           Sign Up
                        </Link>
 
-                    </div>
-                </nav>
+                  </div>
+                
               </div>
            </header>
         </>

@@ -1,14 +1,19 @@
-.footer {
+.footer-container {
   margin-top: 80px;
   padding: 60px 0 24px;
   border-top: 1px solid var(--border);
   background-color: var(--surface);
+  
 }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
   padding-bottom: 40px;
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-left: 8.33333px;
+  margin-right: 8.33333px;
 }
 .footer-logo {
   display: inline-flex;
@@ -21,28 +26,43 @@
 .footer-text {
   color: var(--text-primary);
   max-width: 320px;
+  font-size: 18px;
 }
-.footer h4 {
+.footer-container h4 {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--primary);
   margin-bottom: 16px;
 }
-.footer ul {
+
+.footer-container .logo-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.footer-container .logo-title {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+ 
+}
+
+.footer-container ul {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.footer ul a {
+.footer-container ul a {
   color: var(--text-primary);
   transition: color 0.2s ease;
 }
-.footer ul a:hover {
+.footer-container ul a:hover {
   color: var(--primary-hover);
 }
-.container.footer-bottom {
+.footer-container .footer-bottom {
   display: flex;
   justify-content: space-between;
   padding-top: 24px;
@@ -50,6 +70,10 @@
   color: var(--text-primary);
   font-size: 14px;
   margin-top: 50px;
+   padding-left: 24px;
+  padding-right: 24px;
+  margin-left: 8.33333px;
+  margin-right: 8.33333px;
 }
 .logout-btn {
   border: none;
