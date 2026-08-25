@@ -5,6 +5,7 @@ import ArrowRightIcon from "../../assets/icons/ArrowRightIcon"
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./Home.css"
 import { categories } from "../../data/products";
+import CategoryCard from "../../components/CategoryCard/CategoryCard";
 const Home = () => {
     const featuredProducts = products.slice(0,4);
     const newArrivalProducts = products.slice(4,8);
@@ -51,14 +52,14 @@ const Home = () => {
                                 Find exactly what you're looking for.
                             </p>
                         </div>
-                        <Link to="/shop" className="link-accent">
+                        <Link to="/categories" className="link-accent">
                              All categories <ArrowRightIcon />
                         </Link>
                     </div>
-                    <div className="grid-products">
+                    <div className="grid-categories-preview">
                         {
-                            categorie.map((product)=>{
-                                 return <ProductCard key={product.id} product={product} />     
+                            categorie.map(( category)=>{
+                                 return <CategoryCard key={ category.id} category={category} />     
                             })
                         }
                     </div>
