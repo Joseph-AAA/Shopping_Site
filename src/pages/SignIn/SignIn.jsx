@@ -5,6 +5,7 @@ import "./Auth.css";
 
 function SignIn() {
   // TODO 1: Initialize state for form inputs (email, password)
+   
   // TODO 2: Initialize state for error messages (empty string)
 
 
