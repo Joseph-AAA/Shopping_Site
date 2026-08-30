@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Shop.css";
 import { categories, products } from "../../data/products";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import { useSearchParams } from "react-router-dom";
 const Shop = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const categoryValueFromURL = searchParams.get("category");
+    const[activeCategory, setAcitveCategory] = useState(()=> {
+      return categoryValueFromURL || "all"}); //fallback function
+
+
     const[search ,setSearch] = useState("");
     const[sort, setSort] = useState("default");
-     const[activeCategory, setAcitveCategory] = useState("all");
+
+
+      useEffect(()=>{
+          const currentCategoryFromURL = searchParams.get("category") || "all";
+          
+          if(activeCategory !== currentCategoryFromURL){
+            if(activeCategory === "all"){
+               setSearchParams({},{replace : true});
+            }else{
+              setSearchParams({category:activeCategory},{replace:true} )
+            }
+          }
+      },[activeCategory, searchParams, setSearchParams]);  //searchParams မထည့်ရ infinite loop ဖြစ်တတ်
 
      let visibleProduct = products.filter((product)=>{
           const matchCategory = activeCategory==="all" || activeCategory === product.category

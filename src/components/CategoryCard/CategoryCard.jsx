@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import "./CategoryCard.css";
 import ArrowRightIcon from "../../assets/icons/ArrowRightIcon"
 const CategoryCard = ({category}) => {
-  return <Link to={`./shop?category=SPEAKERS`} className="category-card">
+  return <Link to={`/shop?category=${category.id}`} className="category-card">
             <div className="category-image">
                   <img src={category.image} alt="image" />
             </div>

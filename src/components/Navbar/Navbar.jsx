@@ -29,7 +29,7 @@ const Navbar = () => {
                 <nav className="nav-links">
                      {
                       navLinks.map((link)=>{
-                          return <NavLink key={link.id} to={link.href} >
+                          return <NavLink key={link.href} to={link.href} >
                               {link.label}
                           </NavLink>
                       }) }
