@@ -80,6 +80,31 @@
   margin-bottom: 16px;
 }
 
+.form-match {
+  background: rgba(54, 207, 118, 0.1);
+  border: 1px solid green;
+  color:green;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.error_label-box{
+  display: flex;
+  justify-content: space-between;
+}
+
+.error-message{
+  color : var(--danger)
+}
+
+.match-password{
+  color : green;
+}
+
+
+
 .auth-switch {
   margin-top: 20px;
   color: var(--text-muted);

@@ -14,7 +14,7 @@ const Menu = ({handleCloseMenu,openMenu}) => {
               </h1>
               {
                 navLinks.map((link)=>{
-                  return <NavLink onClick={handleCloseMenu} key={link.id} to={link.href} className="link-con">
+                  return <NavLink onClick={handleCloseMenu} key={link.href} to={link.href} className="link-con">
                             {link.label}
                          </NavLink>
                 })
