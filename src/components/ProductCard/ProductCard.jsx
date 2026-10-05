@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import { products } from "../../data/products";
 import StarIcon from "../../assets/icons/StarIcon";
 import "./ProductCard.css"
+import { useCart } from "../Context/CartContext";
 const ProductCard = ({product}) => {
+
+
+    const {addToCart} =useCart();
+
   return <article>
             <div className="product-image-wrap">
               <img src={product.image} alt={product.title} />
@@ -20,7 +25,7 @@ const ProductCard = ({product}) => {
               </div>
               <div className="product-footer">
                   <span className="product-price">${product.price}</span>
-                  <button className="add-btn">Add to cart</button>
+                  <button onClick={()=>{addToCart}} className="add-btn">Add to cart</button>
               </div>
             </div>
          </article>;

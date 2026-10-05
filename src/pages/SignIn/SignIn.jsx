@@ -2,12 +2,12 @@ import { use, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Auth.css";
 import { useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
     const location = useLocation();
     const user = location.state?.user;
-
+    const navigate = useNavigate();
   // console.log(user?.name);
   // TODO 1: Initialize state for form inputs (email, password)
    const [input , setInput] = useState({
@@ -60,6 +60,9 @@ function SignIn() {
             return;
           }
 
+          navigate("/", {
+              state: { user: input }
+            });
 
   }
 
@@ -121,7 +124,7 @@ function SignIn() {
               onBlur={handleBlur}
             />
           </label>
-          <button onClick={handleChange} type="submit" className="btn-primary">
+          <button onClick={handleSubmit} type="submit" className="btn-primary">
               Sign In
           </button>
         </form>

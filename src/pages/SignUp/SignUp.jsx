@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import "./Auth.css";
 import SignIn from "../SignIn/SignIn";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../components/Context/AuthContext";
 function SignUp() {
-
+ 
+  const {signUp} = useAuth();
   const navigate = useNavigate();
    
   // TODO 1: Initialize state for form inputs (name, email, password, confirm)
@@ -48,21 +49,22 @@ function SignUp() {
     // TODO 4: Write validation checks for name, email, password length, and password match.
     // If valid, clear error and console.log(form)
     setSubmitted(true);
-      if(!input.name.trim() || 
-         !input.email.trim()||
-         !input.password.trim()||
-         !input.confirm.trim() ||
-         !emailValid || 
-         !passwordValid ||
-         !passwordMatch
-         ){
-          return;
-      }else{
-        console.log(input)
-           navigate("/signin", {
-            state: { user: input }
-          });
-      }
+        if(!input.name.trim() || 
+          !input.email.trim()||
+          !input.password.trim()||
+          !input.confirm.trim() ||
+          !emailValid || 
+          !passwordValid ||
+          !passwordMatch
+          ){
+            return;
+        }else{
+          signUp(input.name, input.email, input.password)
+          console.log(input)
+            navigate("/signin", {
+              state: { user: input }
+            });
+        }
 
   }
 
