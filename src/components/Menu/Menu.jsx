@@ -3,7 +3,11 @@ import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import { navLinks } from "../../common/nav-links";
 import { NavLink } from "react-router-dom";
 import "./Menu.css";
+import { useAuth } from "../Context/AuthContext";
+import Avatar from "../Avatar/Avatar";
 const Menu = ({handleCloseMenu,openMenu}) => {
+
+     const {auth, logout} = useAuth();
   return <>
             <section className={`menu-links-con ${openMenu && "open" }`}>
               <button className="close-btn" onClick={handleCloseMenu}>
@@ -19,12 +23,25 @@ const Menu = ({handleCloseMenu,openMenu}) => {
                          </NavLink>
                 })
               }
-              <NavLink className="link-con" to="/signin">
-                  Sign In
-              </NavLink>
-              <NavLink className="link-con" to="/signup">
-                  Sign Up
-              </NavLink>
+
+              {
+                auth.isAuthenticated ? <div onClick={logout && handleCloseMenu}> Logout </div> : <>
+                          
+                                                              <NavLink onClick={handleCloseMenu} className="link-con" to="/signin">
+                                                                  Sign In
+                                                              </NavLink>
+                                                              <NavLink onClick={handleCloseMenu} className="link-con" to="/signup">
+                                                                  Sign Up
+                                                              </NavLink>
+                                                                          
+                                                            </>
+              }
+              
+              
+
+
+
+
               <ThemeToggle />
             </section>
             <div onClick={handleCloseMenu} className={`overlay ${openMenu && "overlay-open"}`}></div>

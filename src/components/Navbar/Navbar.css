@@ -138,6 +138,10 @@
   font-size: 18px;
   cursor: pointer;
 }
+.auth-buttons{
+  display: flex;
+  gap : 7px;
+}
 
 @media (max-width: 900px) {
   .nav-links {

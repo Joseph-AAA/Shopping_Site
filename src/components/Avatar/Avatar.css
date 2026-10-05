@@ -31,6 +31,16 @@
   flex-direction: column;
   min-width: 120px;
 }
+
 .avatar-dropdown .logout-btn {
-  cursor: pointer;
+    color: var(--danger);
+    background: transparent;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.avatar-dropdown .logout-btn:hover {
+    color: #fff;
+    background-color: var(--danger);
+    cursor: pointer;
 }

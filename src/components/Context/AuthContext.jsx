@@ -1,61 +1,232 @@
-import { createContext, useState, useEffect, useContext } from "react"; 
+import {
+    createContext,
+    useState,
+    useEffect,
+    useContext
+} from "react";
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({children})=> {
+const DEFAULT_AUTH_STATE = {
+    isAuthenticated: false,
+    name: "",
+    email: ""
+};
 
-// *************************************** To receive Data from localstorage************************
-    const [users, setUsers] = useState(()=>{
-        const savedUsers = localStorage.getItem("user");
-        if(savedUsers) {
+export const AuthProvider = ({ children }) => {
+
+// *************************************** To receive Data from localstorage BY user************************
+     //User
+    const [users, setUsers] = useState(() => {
+        const savedUsers = localStorage.getItem("users");
+
+        if (savedUsers) {
             return JSON.parse(savedUsers);
         }
+
         return [];
     });
 
-    const DEFAULT_AUTH_STATE = {
-            isAuthenticated : false,
-    }
-    const [auth,setAuth] = useState(()=>{
-           const savedAuth = localStorage.getItem("auth")
-            if(savedAuth){
-                return JSON.parse(savedAuth);
-            }
-            return DEFAULT_AUTH_STATE
+// *************************************** To receive Data from localstorage BY auth************************
+
+    // Authentication
+    const [auth, setAuth] = useState(() => {
+        const savedAuth = localStorage.getItem("auth");
+
+        if (savedAuth) {
+            return JSON.parse(savedAuth);
+        }
+
+        return DEFAULT_AUTH_STATE;
     });
 
+    const [authError, setAuthError] = useState("");
+
+    
+// *************************************** To save users and auth ********************************************
+
+    // Save users
+    useEffect(() => {
+        localStorage.setItem("users", JSON.stringify(users));
+    }, [users]);
+
+    // Save auth
+    useEffect(() => {
+        localStorage.setItem("auth", JSON.stringify(auth));
+    }, [auth]);
 
 
+// ************************************************* Sign Up *************************************************
 
-    useEffect(()=>{
-            localStorage.setItem ("users",JSON.stringify(users))},[users]);
+    // SIGN UP
+    const signUp = (name, email, password) => {
+        const existingUser = users.find(
+            (user) => user.email === email
+        );
 
-    useEffect (()=>{
-            localStorage.setItem("auth", JSON.stringify(auth)),[auth]
-    })
-        
-// ***************************************** Sign Up to keep data***********************************
-    const [authError, setAuthError] = useState ("");
-    const signUp = (name, email, password)=>{
-            const existingUser = users.find((user)=> user.email === email);
+        if (existingUser) {
+            setAuthError("User with this email already exists.");
+            return false;
+        }
 
-            if(existingUser){
-                setAuthError("User with this email already existis.");
-                return;
+        setAuthError("");
+
+        setUsers((prev) => [
+            ...prev,
+            {
+                name,
+                email,
+                password
             }
-            setUsers((prev)=> [...prev, {name, email, password}])
-            setAuth ((prev)=> ({...prev, name, email}))
-    }
+        ]);
 
+        return true;
+    };
+
+// ************************************************* Sign In *************************************************
+    // SIGN IN
+    const signIn = (email, password) => {
+
+        const existingUser = users.find(
+            (user) =>
+                user.email === email &&
+                user.password === password
+        );
+
+        if (!existingUser) {
+            setAuthError("Invalid email or password.");
+            return false;
+        }
+
+        setAuthError("");
+
+        setAuth({
+            isAuthenticated: true,
+            name: existingUser.name,
+            email: existingUser.email
+        });
+
+        return true;
+    };
+
+
+    // LOGOUT
+    const logout = () => {
+        setAuth(DEFAULT_AUTH_STATE);
+        setAuthError("");
+    };
 
 
     return (
-        <AuthContext.Provider value={{signUp, authError,auth}}>
+        <AuthContext.Provider
+            value={{
+                signUp,
+                signIn,
+                logout,
+                auth,
+                authError
+            }}
+        >
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
-export const useAuth = ()=>{
-    return useContext(AuthContext)
-}
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
+
+
+
+// import { createContext, useState, useEffect, useContext } from "react"; 
+
+
+// const AuthContext = createContext(null);
+  
+// export const AuthProvider = ({children})=> {
+
+// // *************************************** To receive Data from localstorage BY user************************
+
+// const [users, setUsers] = useState(()=>{
+//         const savedUsers = localStorage.getItem("users");
+//         if(savedUsers) {
+//             return JSON.parse(savedUsers);
+//         }
+//         return [];
+//     });
+
+
+//     // *************************************** To receive Data from localstorage BY auth************************
+
+//     const DEFAULT_AUTH_STATE = {
+//             isAuthenticated : false,
+//     }
+//     const [auth,setAuth] = useState(()=>{
+//            const savedAuth = localStorage.getItem("auth")
+//             if(savedAuth){
+//                 return JSON.parse(savedAuth);
+//             }
+//             return DEFAULT_AUTH_STATE
+//     });
+
+
+// // ***************************************** Store Data to Localstorage ***********************************
+
+//     useEffect(()=>{
+//                  localStorage.setItem ("users",JSON.stringify(users));
+//             },[users]);
+
+//     useEffect(() => {
+//               localStorage.setItem("auth", JSON.stringify(auth));
+//              }, [auth]);
+            
+
+// // ***************************************** Sign In to keep data***********************************
+
+//     const signIn = (email,password)=>{
+//         const existingUser = users.find((user)=> (user.email === email && user.password === password));
+//         if(!existingUser){
+//             setAuthError("Invalid email or password");
+//             return;
+//         }
+//          setAuthError("")
+        
+//     }
+
+
+
+
+// // ***************************************** Sign Up to keep data***********************************
+    
+//     const [authError, setAuthError] = useState ("");
+//     const signUp = (name, email, password)=>{
+//             const existingUser = users.find((user)=> user.email === email);
+
+//             if(existingUser){
+//                 setAuthError("User with this email already existis.");
+//                 return;
+//             }
+            
+//             setAuthError("")
+
+
+
+//             setUsers((prev)=> [...prev, {name, email, password}])
+//             setAuth ((prev)=> ({...prev, name, email, isAuthenticated :true}))
+//     }
+
+//      const logout = ()=>{
+//         setAuth (DEFAULT_AUTH_STATE);
+//      }
+
+//     return (
+//         <AuthContext.Provider value={{signUp, authError,auth,signIn, logout}}>
+//             {children}
+//         </AuthContext.Provider>
+//     )
+// }
+
+// export const useAuth = ()=>{
+//     return useContext(AuthContext)
+// }

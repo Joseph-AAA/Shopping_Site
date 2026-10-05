@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../components/Context/AuthContext";
 function SignUp() {
  
-  const {signUp} = useAuth();
+  const {signUp, authError} = useAuth();
   const navigate = useNavigate();
    
   // TODO 1: Initialize state for form inputs (name, email, password, confirm)
@@ -55,15 +55,14 @@ function SignUp() {
           !input.confirm.trim() ||
           !emailValid || 
           !passwordValid ||
-          !passwordMatch
+          !passwordMatch ||
+          authError !==""
           ){
             return;
         }else{
           signUp(input.name, input.email, input.password)
           console.log(input)
-            navigate("/signin", {
-              state: { user: input }
-            });
+            navigate("/signin")
         }
 
   }
@@ -83,6 +82,7 @@ function SignUp() {
 
 
         {/* TODO 5: Conditionally display this error message when 'error' has text */}
+        {authError && <div className="form-error"> {authError}</div>}
 
 
         {/* { validation() ? <div className="form-error">Please fill out all fields correctly.</div> : "" } */}

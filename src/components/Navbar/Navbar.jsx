@@ -7,16 +7,23 @@ import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import MenuIcon from "../../assets/icons/MenuIcon";
 import Menu from "../Menu/Menu";
 import { useState } from "react";
+import { useAuth } from "../Context/AuthContext";
+import Avatar from "../Avatar/Avatar";
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
 
    const [openMenu, setOpenMenu] = useState(false);
-
+  const navigate = useNavigate();
    const handleOpenMenu = ()=>{
        setOpenMenu (true);
    }
    const handleCloseMenu = ()=>{
       setOpenMenu(false);
    }
+
+   const {auth} = useAuth();
+
   return <>
            <header className="navbar">
               <div className="container navbar-inner">
@@ -43,12 +50,27 @@ const Navbar = () => {
                             {/*come back after learning context*/}
                             <span className="cart-count"> 1 </span>
                        </Link>
-                       <Link to="/signin" className="btn-ghost">
-                          Sign In 
-                       </Link>
-                       <Link to="/signup" className="btn-primary">
-                          Sign Up
-                       </Link>
+
+
+                       {
+                           auth.isAuthenticated ? <Avatar /> : <div  className="auth-buttons">
+                                                                   <Link to="/signin" className=" btn-ghost">
+                                                                         Sign In 
+                                                                    </Link>
+                                                                    <Link to="/signup" className="btn-primary">
+                                                                         Sign Up
+                                                                    </Link> 
+                                                                    
+                                                                        
+                                                                     
+                                                               </div>
+                           
+                           
+                       }
+                       
+
+
+
                        <button className="menu-toggle" onClick={handleOpenMenu}>
                            <MenuIcon />
                       </button>

@@ -14,7 +14,7 @@ import NotFound from  "./pages/NotFound/NotFound";
 import Navbar from "./components/Navbar/Navbar"
 import Footer from "./components/Footer/Footer"
 import Hero from "./components/Hero/Hero";
-
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute"
 
 
 
@@ -25,17 +25,30 @@ const App = () => {
    
        <main className="app-main">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element= {<Shop />} />
-            <Route path="/categories" element= {<Categories />} />
-            <Route path="/about" element= {<About />} />
-            <Route path="/contact" element= {<Contact />} />
-            <Route path="/signin" element= {<SignIn />} />
-            <Route path="/signup" element= {<SignUp />} />
-            <Route path="/cart" element= {<Cart />} />
-            <Route path="/checkout" element= {<CheckOut />} />
-            <Route path="/thankyou" element= {<Thankyou />} />
-            <Route path="*" element= {<NotFound />} />
+
+                  {/* Public routes */}
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+
+
+                  {/* Protected routes */}
+
+                  <Route element={<ProtectedRoute />}>
+
+                      <Route path="/" element={<Home />} />
+                      <Route path="/shop" element={<Shop />} />
+                      <Route path="/categories" element={<Categories />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/checkout" element={<CheckOut />} />
+                      <Route path="/thankyou" element={<Thankyou />} />
+
+                  </Route>
+
+
+                  {/* Not Found */}
+                  <Route path="*" element={<NotFound />} />
 
           </Routes>
        </main>

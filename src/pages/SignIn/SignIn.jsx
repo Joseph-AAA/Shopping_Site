@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import "./Auth.css";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../../components/Context/AuthContext";
 
 function SignIn() {
     const location = useLocation();
     const user = location.state?.user;
     const navigate = useNavigate();
+    const {signIn,authError} =useAuth();
+
   // console.log(user?.name);
   // TODO 1: Initialize state for form inputs (email, password)
    const [input , setInput] = useState({
@@ -29,8 +32,7 @@ function SignIn() {
 
         const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim());
         const passwordValid = /^.{6,}$/.test(input.password.trim());
-        const checkMatchEmail = input.email === user?.email;
-        const checkMatchPassword = input.password === user?.password;
+ 
  
    // TODO 3: Write the handle change function to update form state dynamically
         function handleChange(e) {
@@ -53,21 +55,25 @@ function SignIn() {
             !input.email.trim() ||
             !input.password.trim() ||
             !emailValid ||
-            !passwordValid ||
-            !checkMatchPassword ||
-            !checkMatchEmail
+            !passwordValid 
+        
           ) {
             return;
           }
 
-          navigate("/", {
-              state: { user: input }
-            });
+          const success = signIn(
+            input.email,
+            input.password
+           );
+
+          if (!success) {
+              return;
+          }
+
+           navigate("/");
 
   }
 
-  console.log(checkMatchEmail);
-  console.log(checkMatchPassword);
 
    function handleBlur(e) {
                 setTouched({ ...touched,[e.target.name]: true});
@@ -76,25 +82,23 @@ function SignIn() {
 
 
   return (
-    <section className="auth-section" onSubmit={()=> setSubmitted(true)}>
+    <section className="auth-section">
       <div className="auth-card">
         <h1>Welcome Back</h1>
         <p className="auth-sub">Sign in to your NovaTech account.</p>
 
+        {authError && (
+              <div className="form-error">
+                  {authError}
+              </div>
+          )}
 
-        {/* TODO 5: Conditionally display this error message when 'error' has text */}
-
-       
-         
-         
-          {(touched.email || touched.password || submitted) && (!input.email || !input.password || !emailValid) ?  
-              
-              <div className="form-error">Please enter a valid email and a password with 6+ characters.</div> :
-                 
-              ((submitted || (input.password && input.email && emailValid) ) ? ( checkMatchPassword && checkMatchEmail ?  
-                                                                                <div className="form-match">Email and Password Match.</div> : 
-                                                                                <div className="form-error">Email or Password doesn't match.</div>) : null
-              )}
+      {(touched.email || touched.password || submitted) &&
+       (!input.email || !input.password || !emailValid || !passwordValid) && (
+        <div className="form-error">
+            Please enter a valid email and a password with 6+ characters.
+        </div>
+    )}
                 
         
 
@@ -106,7 +110,7 @@ function SignIn() {
               name="email"
               type="email"
               // TODO 6: Bind value and onChange handler
-              value={input.value}
+              value={input.email}
               onChange={handleChange}
               placeholder="you@example.com"
               onBlur={handleBlur}
@@ -120,11 +124,11 @@ function SignIn() {
               // TODO 7: Bind value and onChange handler
               placeholder="••••••••"
               onChange={handleChange}
-              value={input.value}
+              value={input.password}
               onBlur={handleBlur}
             />
           </label>
-          <button onClick={handleSubmit} type="submit" className="btn-primary">
+          <button type="submit" className="btn-primary">
               Sign In
           </button>
         </form>
