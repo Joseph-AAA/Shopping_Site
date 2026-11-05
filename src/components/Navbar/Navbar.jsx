@@ -10,14 +10,18 @@ import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import Avatar from "../Avatar/Avatar";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../Context/CartContext";
 
 const Navbar = () => {
 
-   const [openMenu, setOpenMenu] = useState(false);
-  const navigate = useNavigate();
-   const handleOpenMenu = ()=>{
+    const { cartCount } = useCart();
+    const [openMenu, setOpenMenu] = useState(false);
+    const navigate = useNavigate();
+
+    const handleOpenMenu = ()=>{
        setOpenMenu (true);
    }
+   
    const handleCloseMenu = ()=>{
       setOpenMenu(false);
    }
@@ -47,8 +51,10 @@ const Navbar = () => {
                         <ThemeToggle />
                        <Link to="/cart" className="cart-btn">
                             <CartIcon />
-                            {/*come back after learning context*/}
-                            <span className="cart-count"> 1 </span>
+
+                            <span className="cart-count">
+                                {cartCount}
+                            </span>
                        </Link>
 
 

@@ -29,17 +29,16 @@ const App = () => {
                   {/* Public routes */}
                   <Route path="/signin" element={<SignIn />} />
                   <Route path="/signup" element={<SignUp />} />
-
-
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
                   {/* Protected routes */}
 
                   <Route element={<ProtectedRoute />}>
 
-                      <Route path="/" element={<Home />} />
+                     
                       <Route path="/shop" element={<Shop />} />
                       <Route path="/categories" element={<Categories />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/contact" element={<Contact />} />
                       <Route path="/cart" element={<Cart />} />
                       <Route path="/checkout" element={<CheckOut />} />
                       <Route path="/thankyou" element={<Thankyou />} />
