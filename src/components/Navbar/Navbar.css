@@ -142,6 +142,9 @@
   display: flex;
   gap : 7px;
 }
+.avatar-wrapper {
+    cursor: pointer;
+}
 
 @media (max-width: 900px) {
   .nav-links {

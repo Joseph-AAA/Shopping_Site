@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Auth.css";
-import SignIn from "../SignIn/SignIn";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../components/Context/AuthContext";
 function SignUp() {
@@ -28,7 +27,7 @@ function SignUp() {
   
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim());
   const passwordValid = /^.{6,}$/.test(input.password.trim());   
-  const passwordMatch = input.confirm.match(input.password);
+  const passwordMatch = input.password === input.confirm;
   const [submitted, setSubmitted]  = useState(false);
 
   // TODO 2: Initialize state for error messages (empty string)
@@ -55,14 +54,21 @@ function SignUp() {
           !input.confirm.trim() ||
           !emailValid || 
           !passwordValid ||
-          !passwordMatch ||
-          authError !==""
+          !passwordMatch 
           ){
             return;
         }else{
-          signUp(input.name, input.email, input.password)
-          console.log(input)
-            navigate("/signin")
+          const success = signUp(
+          input.name.trim(),
+          input.email.trim().toLowerCase(),
+          input.password
+        );
+
+        if (!success) {
+          return;
+        }
+
+        navigate("/signin");
         }
 
   }
@@ -94,10 +100,10 @@ function SignUp() {
               <span>Full name</span>
               {(touched.name || submitted) && !input.name &&  <span className="error-message">This Field Is Required</span>}
             </div>
-            <input
+           <input
               name="name"
               type="text"
-              // TODO 6: Bind value and onChange handler
+              value={input.name}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Jane Doe"
@@ -114,6 +120,7 @@ function SignUp() {
             <input
               name="email"
               type="email"
+              value={input.email}
               // TODO 7: Bind value and onChange handler
               onChange={handleChange}
               onBlur={handleBlur}
@@ -131,6 +138,7 @@ function SignUp() {
             <input
               name="password"
               type="password"
+              value={input.password}
               // TODO 8: Bind value and onChange handler
               onChange={handleChange}
               onBlur={handleBlur}
@@ -150,6 +158,7 @@ function SignUp() {
             <input
               name="confirm"
               type="password"
+              value={input.confirm}
               // TODO 9: Bind value and onChange handler
               onChange={handleChange}
               onBlur={handleBlur}

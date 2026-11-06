@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Auth.css";
 import { useLocation } from "react-router-dom";
@@ -7,7 +7,6 @@ import {useAuth} from "../../components/Context/AuthContext";
 
 function SignIn() {
     const location = useLocation();
-    const user = location.state?.user;
     const navigate = useNavigate();
     const {signIn,authError} =useAuth();
 

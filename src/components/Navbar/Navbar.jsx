@@ -58,21 +58,21 @@ const Navbar = () => {
                        </Link>
 
 
-                       {
-                           auth.isAuthenticated ? <Avatar /> : <div  className="auth-buttons">
-                                                                   <Link to="/signin" className=" btn-ghost">
-                                                                         Sign In 
-                                                                    </Link>
-                                                                    <Link to="/signup" className="btn-primary">
-                                                                         Sign Up
-                                                                    </Link> 
-                                                                    
-                                                                        
-                                                                     
-                                                               </div>
-                           
-                           
-                       }
+                      {auth.isAuthenticated ? (
+                            <div className="avatar-wrapper">
+                                <Avatar />
+                            </div>
+                        ) : (
+                            <div className="auth-buttons">
+                                <Link to="/signin" className="btn-ghost">
+                                    Sign In
+                                </Link>
+
+                                <Link to="/signup" className="btn-primary">
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
                        
 
 

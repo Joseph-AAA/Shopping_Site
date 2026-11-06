@@ -1,3 +1,4 @@
+
 import {
     createContext,
     useState,
@@ -15,53 +16,58 @@ const DEFAULT_AUTH_STATE = {
 
 export const AuthProvider = ({ children }) => {
 
-// *************************************** To receive Data from localstorage BY user************************
-     //User
+    // Get registered users from localStorage
     const [users, setUsers] = useState(() => {
-        const savedUsers = localStorage.getItem("users");
-
-        if (savedUsers) {
-            return JSON.parse(savedUsers);
+        try {
+            const savedUsers = localStorage.getItem("users");
+            return savedUsers ? JSON.parse(savedUsers) : [];
+        } catch (error) {
+            console.error("Error loading users:", error);
+            return [];
         }
-
-        return [];
     });
 
-// *************************************** To receive Data from localstorage BY auth************************
-
-    // Authentication
+    // Get authentication state from localStorage
     const [auth, setAuth] = useState(() => {
-        const savedAuth = localStorage.getItem("auth");
-
-        if (savedAuth) {
-            return JSON.parse(savedAuth);
+        try {
+            const savedAuth = localStorage.getItem("auth");
+            return savedAuth
+                ? JSON.parse(savedAuth)
+                : DEFAULT_AUTH_STATE;
+        } catch (error) {
+            console.error("Error loading auth:", error);
+            return DEFAULT_AUTH_STATE;
         }
-
-        return DEFAULT_AUTH_STATE;
     });
 
+    // Authentication error state
     const [authError, setAuthError] = useState("");
 
-    
-// *************************************** To save users and auth ********************************************
+    // Clear authentication error
+    const clearAuthError = () => {
+        setAuthError("");
+    };
 
-    // Save users
+    // Save users to localStorage
     useEffect(() => {
         localStorage.setItem("users", JSON.stringify(users));
     }, [users]);
 
-    // Save auth
+    // Save authentication state to localStorage
     useEffect(() => {
         localStorage.setItem("auth", JSON.stringify(auth));
     }, [auth]);
 
 
-// ************************************************* Sign Up *************************************************
-
     // SIGN UP
     const signUp = (name, email, password) => {
+
+        // Normalize email
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // Check whether email already exists
         const existingUser = users.find(
-            (user) => user.email === email
+            (user) => user.email === normalizedEmail
         );
 
         if (existingUser) {
@@ -71,11 +77,12 @@ export const AuthProvider = ({ children }) => {
 
         setAuthError("");
 
+        // Save new user
         setUsers((prev) => [
             ...prev,
             {
-                name,
-                email,
+                name: name.trim(),
+                email: normalizedEmail,
                 password
             }
         ]);
@@ -83,13 +90,17 @@ export const AuthProvider = ({ children }) => {
         return true;
     };
 
-// ************************************************* Sign In *************************************************
+
     // SIGN IN
     const signIn = (email, password) => {
 
+        // Normalize email
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // Find existing user
         const existingUser = users.find(
             (user) =>
-                user.email === email &&
+                user.email === normalizedEmail &&
                 user.password === password
         );
 
@@ -100,6 +111,7 @@ export const AuthProvider = ({ children }) => {
 
         setAuthError("");
 
+        // Update authentication state
         setAuth({
             isAuthenticated: true,
             name: existingUser.name,
@@ -123,6 +135,7 @@ export const AuthProvider = ({ children }) => {
                 signUp,
                 signIn,
                 logout,
+                clearAuthError,
                 auth,
                 authError
             }}
@@ -133,100 +146,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 
+// Custom hook
 export const useAuth = () => {
     return useContext(AuthContext);
 };
-
-
-
-// import { createContext, useState, useEffect, useContext } from "react"; 
-
-
-// const AuthContext = createContext(null);
-  
-// export const AuthProvider = ({children})=> {
-
-// // *************************************** To receive Data from localstorage BY user************************
-
-// const [users, setUsers] = useState(()=>{
-//         const savedUsers = localStorage.getItem("users");
-//         if(savedUsers) {
-//             return JSON.parse(savedUsers);
-//         }
-//         return [];
-//     });
-
-
-//     // *************************************** To receive Data from localstorage BY auth************************
-
-//     const DEFAULT_AUTH_STATE = {
-//             isAuthenticated : false,
-//     }
-//     const [auth,setAuth] = useState(()=>{
-//            const savedAuth = localStorage.getItem("auth")
-//             if(savedAuth){
-//                 return JSON.parse(savedAuth);
-//             }
-//             return DEFAULT_AUTH_STATE
-//     });
-
-
-// // ***************************************** Store Data to Localstorage ***********************************
-
-//     useEffect(()=>{
-//                  localStorage.setItem ("users",JSON.stringify(users));
-//             },[users]);
-
-//     useEffect(() => {
-//               localStorage.setItem("auth", JSON.stringify(auth));
-//              }, [auth]);
-            
-
-// // ***************************************** Sign In to keep data***********************************
-
-//     const signIn = (email,password)=>{
-//         const existingUser = users.find((user)=> (user.email === email && user.password === password));
-//         if(!existingUser){
-//             setAuthError("Invalid email or password");
-//             return;
-//         }
-//          setAuthError("")
-        
-//     }
-
-
-
-
-// // ***************************************** Sign Up to keep data***********************************
-    
-//     const [authError, setAuthError] = useState ("");
-//     const signUp = (name, email, password)=>{
-//             const existingUser = users.find((user)=> user.email === email);
-
-//             if(existingUser){
-//                 setAuthError("User with this email already existis.");
-//                 return;
-//             }
-            
-//             setAuthError("")
-
-
-
-//             setUsers((prev)=> [...prev, {name, email, password}])
-//             setAuth ((prev)=> ({...prev, name, email, isAuthenticated :true}))
-//     }
-
-//      const logout = ()=>{
-//         setAuth (DEFAULT_AUTH_STATE);
-//      }
-
-//     return (
-//         <AuthContext.Provider value={{signUp, authError,auth,signIn, logout}}>
-//             {children}
-//         </AuthContext.Provider>
-//     )
-// }
-
-// export const useAuth = ()=>{
-//     return useContext(AuthContext)
-// }
